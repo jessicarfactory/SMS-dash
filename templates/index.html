@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>SMS Dashboard</title>
+    <style>
+        .table td.fit, 
+        .table th.fit {
+            white-space: nowrap;
+            width: 1%;
+        }
+    </style>
+  </head>
+  <body>
+        {%block title %}
+            <h1>SMS Deliverability Dashboard</h1>
+            <br>
+            <h2>Send a text to +44 7445 013 502 and track the delivery status below ☎️</h2>
+            <br>
+        {% endblock %}
+    {%block content %}
+    <div class="table-responsive-lg">
+    <table style="width: 100%" class="table">
+        <thead></thead>
+            <tr>
+                <th scope="col" class="col-auto">Direction</th>
+                <th scope="col" class="col-auto">Date created</th>
+                <th scope="col" class="col-auto">Date sent</th>
+                <th scope="col" class="col-auto">Error code</th>
+                <th scope="col" class="col-auto">Error message</th>
+                <th scope="col" class="col-auto">From</th>
+                <th scope="col" class="col-auto">To</th>
+                <th scope="col" class="col-auto">Status</th>
+                <th scope="col" class="col-auto">Cost</th>
+                <th class="col" colspan=3>Body</th>
+                <td class="col">   </td>
+                <td class="col">   </td>
+            </tr>
+        {% for x in sms %}
+            <tr>
+                <td class="col-auto">{{ x.direction.capitalize() }}</td>
+                <td class="col-auto">{{ x.date_created }}</td>
+                <td class="col-auto">{{ x.date_sent }}</td>
+                <td class="col-auto">{{ x.error_code }}</td>
+                <td class="col-auto">{{ x.error_message }}</td>
+                <td class="col-auto">{{ x.from_ }}</td>
+                <td class="col-auto">{{ x.to }}</td>
+                <td class="col-auto">{{ x.status }}</td>
+                <td class="col-auto">{{ x.price }} {{ x.price_unit }}</td>
+                <td class="p-2 flex-grow-1 bd-highlight" colspan="3">{{ x.body }}</td>
+                <td class="col-auto">   </td>
+                <td class="col-auto">   </td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+    {% endblock %}
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+        $(document).ready(function() {
+                var socket = io.connect('http://127.0.0.1:5000');
+                socket.on('connect', function() {
+                io.emit('Listening');
+            });
+            })
+        </script>
+  </body>
+</html>
